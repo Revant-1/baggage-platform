@@ -1,0 +1,40 @@
+name: Python Engine CI
+
+on:
+  push:
+    paths:
+      - "python-engine/**"
+  pull_request:
+    paths:
+      - "python-engine/**"
+
+jobs:
+  python_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        working-directory: python-engine
+        run: pip install -r requirements.txt
+
+      - name: Import test
+        working-directory: python-engine
+        run: |
+          python - <<EOF
+          try:
+              import cv2
+              print("OpenCV OK")
+          except Exception as e:
+              print("OpenCV ERROR:", e)
+              exit(1)
+
+          print("Python engine OK")
+          EOF
