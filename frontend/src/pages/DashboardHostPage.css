@@ -1,0 +1,144 @@
+/* ===================================
+   DASHBOARD HOST PAGE STYLES
+   =================================== */
+
+.dashboard-page {
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* Header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.header-content {
+    flex: 1;
+    min-width: 300px;
+}
+
+.dashboard-header .page-title {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.header-stats {
+    display: flex;
+    gap: 16px;
+}
+
+.header-stat {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 20px 28px;
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--color-accent-primary);
+    line-height: 1;
+}
+
+.stat-text {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 4px;
+}
+
+/* Control Panel */
+.control-panel {
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 32px;
+}
+
+.control-panel-inner {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.input-group {
+    flex: 1;
+    min-width: 300px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 16px;
+    font-size: 16px;
+    pointer-events: none;
+}
+
+.input-group .input {
+    padding-left: 48px;
+}
+
+.quick-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+}
+
+.quick-label {
+    font-size: 13px;
+    color: var(--color-text-muted);
+}
+
+.quick-actions .btn-ghost {
+    padding: 8px 16px;
+    font-size: 13px;
+}
+
+.demo-btn {
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    border: none;
+    color: white;
+}
+
+.demo-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.demo-btn:disabled {
+    opacity: 0.6;
+    transform: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+    }
+
+    .control-panel-inner {
+        flex-direction: column;
+    }
+
+    .input-group {
+        min-width: 100%;
+    }
+
+    .btn-primary,
+    .demo-btn {
+        width: 100%;
+    }
+}
