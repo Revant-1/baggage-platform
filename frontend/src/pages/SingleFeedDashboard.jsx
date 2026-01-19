@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useRef, useMemo } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import {
-    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area
+    AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from "recharts";
 import {
-    Activity, ArrowLeft, BarChart3, Clock, Cpu, Database,
-    ExternalLink, Layers, LayoutDashboard, Monitor, Network, ShieldCheck
+    Activity, ArrowLeft, TrendingUp, Settings, Wifi, AlertTriangle, Play, Cpu
 } from "lucide-react";
 import "./SingleFeedDashboard.css";
 
@@ -19,18 +18,21 @@ const SingleFeedDashboard = () => {
     const ws = useRef(null);
     const frameTimestamps = useRef([]);
 
-    // Data generation for charts (mocking the "Daily Trends" logic)
+    // Data generation for charts based on real detections
     useEffect(() => {
         const interval = setInterval(() => {
             const now = new Date();
             const timeStr = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
 
             setHistoricalData(prev => {
-                const newData = [...prev, { time: timeStr, count: currentCount }];
+                const newData = [...prev, {
+                    time: timeStr,
+                    count: currentCount
+                }];
                 if (newData.length > 20) return newData.slice(1);
                 return newData;
             });
-        }, 5000);
+        }, 10000);
         return () => clearInterval(interval);
     }, [currentCount]);
 
@@ -64,164 +66,203 @@ const SingleFeedDashboard = () => {
         };
     }, [streamId]);
 
-    const stats = useMemo(() => [
-        { label: "Current Baggage", value: currentCount, status: "Normal", icon: <Layers size={20} /> },
-        { label: "Total Handled Today", value: "1,248", status: "Normal", icon: <Database size={20} /> },
-        { label: "Occupancy Rate", value: "78%", status: "Warning", icon: <BarChart3 size={20} /> },
-        { label: "AI Accuracy", value: "99.2%", status: "Excellent", icon: <ShieldCheck size={20} /> },
-    ], [currentCount]);
+    const handleStopStream = async () => {
+        try {
+            await fetch("http://localhost:5000/streams/stop", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ streamId }),
+            });
+            setStatus("stopped");
+            if (ws.current) ws.current.close();
+        } catch (err) {
+            console.error("Failed to stop stream", err);
+        }
+    };
 
     return (
-        <div className="analytics-dashboard page-container">
-            {/* Top Bar */}
-            <header className="analytics-header animate-fadeIn">
-                <div className="header-left">
-                    <Link to="/dashboard" className="back-btn">
-                        <ArrowLeft size={20} />
-                    </Link>
-                    <div>
-                        <h1 className="page-title">Airport Baggage Analytics</h1>
-                        <p className="page-subtitle">Real-time monitoring & AI-detection • {streamId.slice(0, 8)}</p>
-                    </div>
-                </div>
-                <div className="header-right">
-                    <div className="date-display">
-                        <Clock size={16} />
-                        <span>Today, {new Date().toLocaleDateString()}</span>
-                    </div>
-                    <button className="btn btn-primary btn-sm">Export Report</button>
-                    <div className="user-profile">
-                        <div className="profile-avatar">RS</div>
-                    </div>
-                </div>
-            </header>
-
-            <div className="dashboard-grid">
-                {/* Main Content Area */}
-                <div className="main-stats-col">
+        <div className="single-feed-dashboard page-container">
+            {/* Main Grid */}
+            <div className="dashboard-layout">
+                {/* Left Column - Video & Charts */}
+                <div className="main-column">
                     {/* Live Feed Card */}
-                    <section className="card glass feed-card animate-scaleIn">
-                        <div className="card-header">
-                            <div className="card-title">
-                                <span>Live Feed - Zone A</span>
+                    <section className="feed-section card animate-scaleIn">
+                        <div className="feed-header">
+                            <div className="feed-title">
+                                <Link to="/dashboard" className="back-link">
+                                    <ArrowLeft size={18} />
+                                </Link>
+                                <span>Live Feed - {streamId.slice(0, 8)}</span>
                                 <span className={`badge ${status === 'live' ? 'badge-live' : 'badge-offline'}`}>
                                     {status.toUpperCase()}
                                 </span>
                             </div>
-                            <div className="feed-controls">
-                                <button className="control-btn">⏸</button>
-                                <button className="control-btn">🔄</button>
-                                <div className="live-counter">
-                                    Current Count: <span className="highlight">{currentCount}</span>
-                                </div>
+                            <div className="feed-actions">
+                                <button
+                                    className="icon-btn-sm"
+                                    onClick={handleStopStream}
+                                    title="Stop Stream"
+                                    style={{ color: '#ef4444' }}
+                                >
+                                    <div style={{ width: '12px', height: '12px', background: 'currentColor', borderRadius: '2px' }}></div>
+                                </button>
+                                <button className="icon-btn-sm">
+                                    <Play size={16} />
+                                </button>
+                                <button className="icon-btn-sm">
+                                    <Settings size={16} />
+                                </button>
                             </div>
                         </div>
-                        <div className="video-viewport">
+
+                        <div className="video-container">
                             {imageSrc ? (
-                                <img src={imageSrc} alt="Live Stream" />
+                                <img src={imageSrc} alt="Live Stream" className="video-feed" />
                             ) : (
-                                <div className="viewport-placeholder">
+                                <div className="video-placeholder">
                                     <div className="spinner"></div>
                                     <span>Establishing Secure Connection...</span>
                                 </div>
                             )}
+
+                            {/* Baggage Count Overlay */}
+                            <div className="count-overlay">
+                                <div className="count-label">CURRENT COUNT</div>
+                                <div className="count-value">{currentCount}</div>
+                            </div>
                         </div>
                     </section>
 
                     {/* Historical Trends Chart */}
-                    <section className="card trend-card animate-fadeIn" style={{ animationDelay: "0.2s" }}>
+                    <section className="chart-section card animate-fadeIn">
                         <div className="card-header">
-                            <h3 className="card-title">Historical Trends - Hourly Statistics</h3>
+                            <h3 className="card-title">Historical Trends - Today</h3>
                             <div className="chart-tabs">
                                 <button className="tab-btn active">Timeline View</button>
-                                <button className="tab-btn">Peak Hours Heatmap</button>
                             </div>
                         </div>
                         <div className="chart-container">
-                            <ResponsiveContainer width="100%" height={300}>
+                            <ResponsiveContainer width="100%" height={280}>
                                 <AreaChart data={historicalData}>
                                     <defs>
                                         <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
-                                            <stop offset="5%" stopColor="var(--color-accent-primary)" stopOpacity={0.3} />
-                                            <stop offset="95%" stopColor="var(--color-accent-primary)" stopOpacity={0} />
+                                            <stop offset="5%" stopColor="#6366f1" stopOpacity={0.2} />
+                                            <stop offset="95%" stopColor="#6366f1" stopOpacity={0} />
                                         </linearGradient>
                                     </defs>
-                                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-                                    <XAxis dataKey="time" stroke="var(--color-text-muted)" fontSize={12} tickLine={false} axisLine={false} />
-                                    <YAxis stroke="var(--color-text-muted)" fontSize={12} tickLine={false} axisLine={false} />
+                                    <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" vertical={false} />
+                                    <XAxis dataKey="time" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
+                                    <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
                                     <Tooltip
-                                        contentStyle={{ background: 'var(--color-bg-card)', border: '1px solid var(--color-border)', borderRadius: '8px' }}
-                                        labelStyle={{ color: 'var(--color-text-primary)' }}
+                                        contentStyle={{
+                                            background: '#ffffff',
+                                            border: '1px solid #e2e8f0',
+                                            borderRadius: '8px',
+                                            boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                                        }}
                                     />
                                     <Area
                                         type="monotone"
                                         dataKey="count"
-                                        stroke="var(--color-accent-primary)"
-                                        strokeWidth={3}
+                                        stroke="#6366f1"
+                                        strokeWidth={2}
                                         fillOpacity={1}
                                         fill="url(#colorCount)"
-                                        animationDuration={1500}
+                                        name="Baggage Count"
                                     />
                                 </AreaChart>
                             </ResponsiveContainer>
+                            <div className="chart-legend">
+                                <div className="legend-item">
+                                    <span className="legend-dot" style={{ background: '#6366f1' }}></span>
+                                    Baggage Count
+                                </div>
+                            </div>
                         </div>
                     </section>
                 </div>
 
-                {/* Sidebar Stats Area */}
-                <div className="side-stats-col">
-                    {/* Status Summary */}
-                    <section className="card stats-stack animate-slideIn">
-                        <h3 className="section-header">Current Status</h3>
-                        <div className="stats-list">
-                            {stats.map((stat, i) => (
-                                <div className="stat-row" key={i}>
-                                    <div className="stat-info">
-                                        <div className="stat-label">
-                                            {stat.icon}
-                                            {stat.label}
-                                        </div>
-                                        <div className="stat-val-group">
-                                            <span className="stat-value-big">{stat.value}</span>
-                                            <span className={`status-pill ${stat.status.toLowerCase()}`}>{stat.status}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
+                {/* Right Column - Status & Performance */}
+                <div className="side-column">
+                    {/* Current Status Section */}
+                    <section className="status-section">
+                        <h3 className="section-header">CURRENT STATUS</h3>
+
+                        {/* Current Baggage Card */}
+                        <div className="metric-card animate-slideIn">
+                            <div className="metric-header">
+                                <span className="metric-label">Current Baggage</span>
+                                <span className="badge badge-normal">Live</span>
+                            </div>
+                            <div className="metric-value">{currentCount}</div>
+                            <div className="metric-subtext">Items detected</div>
+                        </div>
+
+                        {/* Stream Status Card */}
+                        <div className="metric-card animate-slideIn" style={{ animationDelay: '0.1s' }}>
+                            <div className="metric-header">
+                                <span className="metric-label">Stream Status</span>
+                                <span className={`badge ${status === 'live' ? 'badge-normal' : 'badge-warning'}`}>
+                                    {status === 'live' ? 'Connected' : 'Waiting'}
+                                </span>
+                            </div>
+                            <div className="metric-value" style={{ fontSize: '24px' }}>{streamId.slice(0, 8)}</div>
+                            <div className="metric-subtext">Stream ID</div>
                         </div>
                     </section>
 
-                    {/* System Performance */}
-                    <section className="card performance-card animate-slideIn" style={{ animationDelay: "0.1s" }}>
-                        <h3 className="section-header">System Performance</h3>
-                        <div className="perf-item">
-                            <div className="perf-label">
-                                <Activity size={16} />
-                                <span>Inference FPS</span>
-                                <span className="perf-tag pulse">Stable</span>
+                    {/* System Performance Section */}
+                    <section className="performance-section card animate-slideIn" style={{ animationDelay: '0.2s' }}>
+                        <h3 className="section-header" style={{ padding: '20px 20px 0' }}>SYSTEM PERFORMANCE</h3>
+                        <div className="performance-content">
+                            {/* Detection FPS */}
+                            <div className="perf-item">
+                                <div className="perf-header">
+                                    <div className="perf-label">
+                                        <Activity size={14} />
+                                        <span>Detection FPS</span>
+                                    </div>
+                                    <span className="perf-badge">{fps > 20 ? 'GOOD' : fps > 10 ? 'FAIR' : 'LOW'}</span>
+                                </div>
+                                <div className="perf-row">
+                                    <div className="perf-value">
+                                        <span className="number">{fps}</span>
+                                        <span className="unit">fps</span>
+                                    </div>
+                                </div>
+                                <div className="progress-bar">
+                                    <div className="progress-fill success" style={{ width: `${Math.min(fps / 30 * 100, 100)}%` }}></div>
+                                </div>
                             </div>
-                            <div className="perf-value">{fps} <span className="u">fps</span></div>
-                            <div className="perf-bar-bg"><div className="perf-bar-fill" style={{ width: `${(fps / 30) * 100}%` }}></div></div>
+
+                            {/* Network Status */}
+                            <div className="perf-item">
+                                <div className="perf-header">
+                                    <div className="perf-label">
+                                        <Wifi size={14} />
+                                        <span>Connection</span>
+                                    </div>
+                                    <span className="perf-badge">{status === 'live' ? 'ACTIVE' : 'WAITING'}</span>
+                                </div>
+                                <div className="perf-row">
+                                    <div className="perf-value">
+                                        <span className="number">{status === 'live' ? 'Connected' : 'Connecting'}</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div className="perf-item">
-                            <div className="perf-label">
-                                <Network size={16} />
-                                <span>Latency</span>
-                                <span className="perf-tag">Ideal</span>
+                        {/* System Info Footer */}
+                        <div className="system-info">
+                            <div className="info-row">
+                                <span>Model:</span>
+                                <span className="link">YOLOv11</span>
                             </div>
-                            <div className="perf-value">12 <span className="u">ms</span></div>
-                            <div className="perf-bar-bg"><div className="perf-bar-fill" style={{ width: '15%' }}></div></div>
-                        </div>
-
-                        <div className="perf-item">
-                            <div className="perf-label">
-                                <Cpu size={16} />
-                                <span>Engine Uptime</span>
-                                <span className="perf-tag">Stable</span>
+                            <div className="info-row">
+                                <span>WebSocket:</span>
+                                <span>ws://localhost:8081</span>
                             </div>
-                            <div className="perf-value">99.9<span className="u">%</span></div>
-                            <div className="perf-bar-bg"><div className="perf-bar-fill" style={{ width: '99%' }}></div></div>
                         </div>
                     </section>
                 </div>

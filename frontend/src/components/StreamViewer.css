@@ -2,16 +2,25 @@
    STREAM VIEWER COMPONENT STYLES
    =================================== */
 
-.stream-card {
-    position: relative;
+.stream-viewer {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
     overflow: hidden;
+    transition: all var(--transition-normal);
 }
 
+.stream-viewer:hover {
+    border-color: rgba(99, 102, 241, 0.3);
+    box-shadow: var(--shadow-md);
+}
+
+/* Stream Header */
 .stream-header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    padding: 14px 16px;
+    align-items: center;
+    padding: 14px 18px;
     background: var(--color-bg-tertiary);
     border-bottom: 1px solid var(--color-border);
 }
@@ -19,44 +28,80 @@
 .stream-info {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 
-.stream-id {
-    font-size: 13px;
+.stream-title {
+    font-size: 14px;
     font-weight: 600;
-    color: var(--color-text-secondary);
-    font-family: 'SF Mono', 'Consolas', monospace;
+    color: var(--color-text-primary);
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.btn-stop {
-    width: 28px;
-    height: 28px;
+.stream-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.stream-badge.live {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--color-success);
+}
+
+.stream-badge.live::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--color-success);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.stream-badge.connecting {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--color-warning);
+}
+
+.stream-badge.offline {
+    background: rgba(239, 68, 68, 0.15);
+    color: var(--color-danger);
+}
+
+/* Stream Stats */
+.stream-stats {
     display: flex;
     align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: 1px solid var(--color-border);
-    border-radius: 6px;
-    color: var(--color-text-muted);
+    gap: 16px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-size: 12px;
-    cursor: pointer;
-    transition: all var(--transition-fast);
+    color: var(--color-text-muted);
 }
 
-.btn-stop:hover {
-    background: var(--color-danger);
-    border-color: var(--color-danger);
-    color: white;
+.stat-item strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
 }
 
+/* Video Area */
 .stream-video {
     position: relative;
     aspect-ratio: 16 / 9;
-    background: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    overflow: hidden;
 }
 
 .stream-video img {
@@ -66,72 +111,140 @@
 }
 
 .stream-placeholder {
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 16px;
-    color: var(--color-text-muted);
-    font-size: 14px;
+    color: #64748b;
 }
 
-.stream-overlay {
+.stream-placeholder span {
+    font-size: 13px;
+}
+
+/* Count Badge Overlay */
+.count-badge {
     position: absolute;
-    top: 12px;
-    right: 12px;
-    display: flex;
-    gap: 8px;
-}
-
-.stat-chip {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 8px 12px;
-    background: rgba(0, 0, 0, 0.7);
+    bottom: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(8px);
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 16px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.stat-value {
-    font-size: 18px;
+.count-badge .label {
+    font-size: 9px;
     font-weight: 700;
-    color: var(--color-accent-primary);
-    line-height: 1;
-}
-
-.stat-label {
-    font-size: 10px;
-    font-weight: 600;
     color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-top: 2px;
 }
 
+.count-badge .value {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--color-text-primary);
+    line-height: 1;
+}
+
+/* Stream Footer */
 .stream-footer {
-    padding: 12px 16px;
-    background: var(--color-bg-secondary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
     border-top: 1px solid var(--color-border);
 }
 
-.stream-source {
+.stream-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.meta-label {
+    font-size: 11px;
+    color: var(--color-text-muted);
+}
+
+.meta-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-accent-primary);
+}
+
+.stream-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    overflow: hidden;
-}
-
-.source-icon {
-    font-size: 14px;
-    flex-shrink: 0;
-}
-
-.source-text {
-    font-size: 12px;
+    justify-content: center;
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
     color: var(--color-text-muted);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-family: 'SF Mono', 'Consolas', monospace;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.action-btn:hover {
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    border-color: var(--color-accent-primary);
+}
+
+.action-btn.danger:hover {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--color-danger);
+    border-color: var(--color-danger);
+}
+
+/* FPS Indicator */
+.fps-indicator {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: white;
+}
+
+.fps-indicator.good {
+    color: var(--color-success);
+}
+
+.fps-indicator.warning {
+    color: var(--color-warning);
+}
+
+.fps-indicator.bad {
+    color: var(--color-danger);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .stream-header {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+
+    .stream-stats {
+        width: 100%;
+        justify-content: space-between;
+    }
 }
