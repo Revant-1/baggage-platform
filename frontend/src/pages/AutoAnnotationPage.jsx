@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
-    Upload, FileText, CheckCircle, AlertCircle, Loader,
-    Download, Trash2, Eye, RefreshCw, Info, Zap, Cpu
+    Upload,  AlertCircle, Loader,
+    Download, Trash2, Eye, Info, Zap, Cpu
 } from "lucide-react";
 import "./AutoAnnotationPage.css";
 

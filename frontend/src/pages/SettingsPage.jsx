@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {
-    Brain, Settings, Users, Shield, Check,
+    Brain, Settings,
     Mail, Webhook, MessageSquare
 } from "lucide-react";
 import "./SettingsPage.css";

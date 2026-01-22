@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { API } from "../api/backend";
 import {
-  Camera, MapPin, Filter, Plus, Settings, Wifi, WifiOff
+  Camera, MapPin, Filter, Plus, Settings, Wifi, 
 } from "lucide-react";
 import "./CamerasPage.css";
 

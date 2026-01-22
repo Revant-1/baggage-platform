@@ -4,7 +4,7 @@ import {
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from "recharts";
 import {
-    Activity, ArrowLeft, TrendingUp, Settings, Wifi, AlertTriangle, Play, Cpu
+    Activity, ArrowLeft, Settings, Wifi, Play,
 } from "lucide-react";
 import "./SingleFeedDashboard.css";
 

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
-    Bell, Moon, Sun, Search, Calendar, ChevronDown,
-    LayoutDashboard, Camera, AlertTriangle, Settings, FileText
+    Bell, Moon, Sun,  Calendar, ChevronDown,
+    LayoutDashboard, Camera,  Settings, FileText
 } from "lucide-react";
 import "./TopNavbar.css";
 
