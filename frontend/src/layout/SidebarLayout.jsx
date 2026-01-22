@@ -1,22 +1,26 @@
-import { Link } from "react-router-dom";
-import "./sidebar.css";
+import TopNavbar from "../components/TopNavbar";
+import "./navbar-layout.css";
 
 export default function SidebarLayout({ children }) {
   return (
-    <div style={{ display: "flex" }}>
-      {/* Sidebar */}
-      <div className="sidebar">
-        <h2>Baggage AI</h2>
-        <Link to="/clients">Clients</Link>
-        <Link to="/projects">Projects</Link>
-        <Link to="/cameras">Cameras</Link>
-        <Link to="/live">Live Stream</Link>
-      </div>
-
-      {/* Main Content */}
-      <div style={{ flex: 1, padding: "20px" }}>
+    <div className="app-layout">
+      <TopNavbar />
+      <main className="main-content">
         {children}
-      </div>
+      </main>
+      <footer className="app-footer">
+        <div className="footer-left">
+          <span>© 2024 Baggage Analytics System. All systems nominal.</span>
+        </div>
+        <div className="footer-right">
+          <span className="footer-status">
+            <span className="status-dot"></span>
+            YOLOv11 Engine Active
+          </span>
+          <a href="#docs" className="footer-link">Documentation</a>
+          <a href="#support" className="footer-link">Support</a>
+        </div>
+      </footer>
     </div>
   );
 }

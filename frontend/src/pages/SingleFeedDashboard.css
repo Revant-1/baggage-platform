@@ -1,0 +1,608 @@
+/* ===================================
+   SINGLE FEED DASHBOARD STYLES
+   =================================== */
+
+.single-feed-dashboard {
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* Dashboard Layout Grid */
+.dashboard-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+}
+
+.main-column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.side-column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Feed Section */
+.feed-section {
+    overflow: hidden;
+}
+
+.feed-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.feed-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+.feed-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.icon-btn-sm {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-tertiary);
+    border: none;
+    border-radius: 6px;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.icon-btn-sm:hover {
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+}
+
+/* Video Container */
+.video-container {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    overflow: hidden;
+}
+
+.video-feed {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.video-placeholder {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    color: #94a3b8;
+}
+
+/* Count Overlay */
+.count-overlay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
+    padding: 16px 24px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+.count-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+}
+
+.count-value {
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--color-text-primary);
+    line-height: 1;
+    margin: 4px 0;
+}
+
+.count-change {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.count-change.up {
+    color: var(--color-success);
+}
+
+.count-change.down {
+    color: var(--color-danger);
+}
+
+/* Detection Overlay */
+.detection-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.detection-box {
+    position: absolute;
+    border: 2px solid var(--color-success);
+    border-radius: 4px;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.detection-box.warning {
+    border-color: var(--color-warning);
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.detection-label {
+    position: absolute;
+    top: -24px;
+    left: 0;
+    background: var(--color-success);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.detection-box.warning .detection-label {
+    background: var(--color-warning);
+}
+
+/* Chart Section */
+.chart-section {
+    padding: 0;
+}
+
+.chart-container {
+    padding: 20px;
+}
+
+.chart-tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--color-bg-tertiary);
+    padding: 4px;
+    border-radius: 8px;
+}
+
+.tab-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 6px;
+    background: transparent;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.tab-btn.active {
+    background: white;
+    color: var(--color-text-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.tab-btn:hover:not(.active) {
+    color: var(--color-text-primary);
+}
+
+.chart-legend {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+}
+
+.legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+/* Status Section */
+.status-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.status-section .metric-card {
+    padding: 20px;
+}
+
+.metric-card .metric-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.metric-card .metric-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-muted);
+}
+
+.metric-card .metric-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    line-height: 1.1;
+}
+
+.metric-card .metric-subtext {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    margin-top: 2px;
+}
+
+.metric-card .metric-trend {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 12px;
+}
+
+.metric-card .metric-trend.up {
+    color: var(--color-success);
+}
+
+.metric-card .metric-trend.warning {
+    color: var(--color-warning);
+}
+
+/* Performance Section */
+.performance-section {
+    padding: 0;
+}
+
+.performance-content {
+    padding: 16px 20px;
+}
+
+.perf-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.perf-item:first-child {
+    padding-top: 0;
+}
+
+.perf-item:last-child {
+    border-bottom: none;
+}
+
+.perf-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.perf-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+}
+
+.perf-badge {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--color-success);
+    text-transform: uppercase;
+}
+
+.perf-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 8px;
+}
+
+.perf-value {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.perf-value .number {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+}
+
+.perf-value .unit {
+    font-size: 14px;
+    color: var(--color-text-muted);
+}
+
+.perf-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--color-text-muted);
+    margin-bottom: 8px;
+}
+
+/* System Info Footer */
+.system-info {
+    padding: 16px 20px;
+    background: var(--color-bg-tertiary);
+    border-top: 1px solid var(--color-border);
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    padding: 6px 0;
+    color: var(--color-text-muted);
+}
+
+.info-row .link {
+    color: var(--color-accent-primary);
+    cursor: pointer;
+}
+
+/* Locations Section */
+.locations-section {
+    margin-top: 0;
+}
+
+.locations-grid {
+    display: grid;
+    grid-template-columns: 200px repeat(4, 1fr);
+    gap: 16px;
+}
+
+/* Airport Layout */
+.airport-layout {
+    grid-row: span 2;
+    padding: 16px;
+}
+
+.layout-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 16px;
+}
+
+.layout-map {
+    position: relative;
+    height: 160px;
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.terminal {
+    position: relative;
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+}
+
+.terminal-a {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.terminal-b {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.baggage-area {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    text-align: center;
+}
+
+.camera-dot {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 3px solid;
+}
+
+.camera-dot.active {
+    background: var(--color-success);
+    border-color: rgba(16, 185, 129, 0.3);
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.5);
+}
+
+.camera-dot.offline {
+    background: var(--color-danger);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Camera Location Card */
+.camera-location-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+}
+
+.camera-icon-wrapper {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-bg-tertiary);
+    border-radius: 10px;
+}
+
+.camera-icon-wrapper .online {
+    color: var(--color-success);
+}
+
+.camera-icon-wrapper .offline {
+    color: var(--color-text-muted);
+}
+
+.camera-info {
+    flex: 1;
+}
+
+.camera-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 2px;
+}
+
+.camera-loc {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    margin-bottom: 6px;
+}
+
+.status-badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.status-badge.online {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--color-success);
+}
+
+.status-badge.offline {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--color-danger);
+}
+
+.camera-count {
+    text-align: right;
+}
+
+.camera-count .count-num {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-accent-primary);
+}
+
+.camera-count .count-label {
+    display: block;
+    font-size: 10px;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+}
+
+/* Responsive */
+@media (max-width: 1400px) {
+    .locations-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .airport-layout {
+        grid-row: auto;
+        grid-column: span 3;
+    }
+}
+
+@media (max-width: 1200px) {
+    .dashboard-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .side-column {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .status-section {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .locations-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .airport-layout {
+        grid-column: auto;
+    }
+
+    .side-column {
+        grid-template-columns: 1fr;
+    }
+
+    .status-section {
+        grid-template-columns: 1fr;
+    }
+
+    .count-overlay {
+        padding: 12px 16px;
+    }
+
+    .count-value {
+        font-size: 32px;
+    }
+}

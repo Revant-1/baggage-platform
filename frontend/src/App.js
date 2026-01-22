@@ -5,6 +5,10 @@ import ClientsPage from "./pages/ClientsPage";
 import ProjectsPage from "./pages/ProjectsPage";
 import CamerasPage from "./pages/CamerasPage";
 import LiveCameraPage from "./pages/LiveCameraPage";
+import DashboardHostPage from "./pages/DashboardHostPage";
+import SingleFeedDashboard from "./pages/SingleFeedDashboard";
+import AutoAnnotationPage from "./pages/AutoAnnotationPage";
+import SettingsPage from "./pages/SettingsPage";
 
 
 function App() {
@@ -16,6 +20,10 @@ function App() {
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/cameras" element={<CamerasPage />} />
           <Route path="/live" element={<LiveCameraPage />} />
+          <Route path="/dashboard" element={<DashboardHostPage />} />
+          <Route path="/dashboard/:streamId" element={<SingleFeedDashboard />} />
+          <Route path="/auto-annotation" element={<AutoAnnotationPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Routes>
       </SidebarLayout>
     </BrowserRouter>
@@ -23,3 +31,4 @@ function App() {
 }
 
 export default App;
+
