@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {
-    Upload,  AlertCircle, Loader,
+    Upload, AlertCircle, Loader,
     Download, Trash2, Eye, Info, Zap, Cpu
 } from "lucide-react";
 import "./AutoAnnotationPage.css";
@@ -75,11 +75,7 @@ const AutoAnnotationPage = () => {
         }
     };
 
-    const getConfidenceLabel = () => {
-        if (confidence < 0.3) return "PRECISE";
-        if (confidence < 0.6) return "BALANCED";
-        return "LOOSE";
-    };
+
 
     return (
         <div className="auto-annotation-page page-container">
